@@ -1,7 +1,7 @@
 [
   {
     "buildingId": "BLD2024001",
-    "ownerName": "Rajesh Kumar Nair",
+    "ownerName": "Anitha Varma",
     "mobileNumber": "9876543210",
     "aadhaarNumber": "123456789012",
     "ward": "Ward 15 - Thiruvananthapuram",
@@ -25,8 +25,8 @@
   },
   {
     "buildingId": "BLD2024002",
-    "ownerName": "Lakshmi Menon",
-    "mobileNumber": "9845123456",
+    "ownerName": "Rahul Menon",
+    "mobileNumber": "9123456780",
     "aadhaarNumber": "234567890123",
     "ward": "Ward 22 - Kochi",
     "address": "12/456, MG Road, Ernakulam, Kerala 682011",
@@ -59,11 +59,11 @@
   },
   {
     "buildingId": "BLD2024004",
-    "ownerName": "Priya Krishnan",
-    "mobileNumber": "8547612345",
+    "ownerName": "Zara Nair",
+    "mobileNumber": "9012345678",
     "aadhaarNumber": "456789012345",
-    "ward": "Ward 5 - Thrissur",
-    "address": "78/234, Swaraj Round, Thrissur, Kerala 680001",
+    "ward": "Ward 5 - Kozhikode",
+    "address": "78/234, East Nadakkavu, Kozhikode, Kerala 673001",
     "taxes": [
       {
         "id": "TAX-2024-004",
