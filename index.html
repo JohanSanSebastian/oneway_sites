@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KSEB Web Self Services - Interactive</title>
+    <style>
+        :root {
+            --kseb-blue: #005691;
+            --brand-blue: #00a0df;
+            --app-purple: #5d5fef;
+            --bg-gray: #f4f7f9;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: var(--bg-gray);
+            color: #333;
+        }
+
+        /* Desktop Header Layout */
+        header {
+            background: white;
+            border-bottom: 3px solid var(--kseb-blue);
+            padding: 15px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-size: 24px; font-weight: 800; color: var(--kseb-blue); }
+        
+        nav {
+            background: #e9ecef;
+            padding: 10px 10%;
+            display: flex;
+            gap: 25px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Form Container */
+        .main-card {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            background: var(--brand-blue);
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+        }
+
+        .form-section { padding: 30px; }
+
+        .input-group {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .input-group label { width: 220px; font-size: 14px; color: #555; }
+        
+        .input-group input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .captcha-area {
+            display: inline-block;
+            background: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        #captchaCanvas { display: inline-block; vertical-align: middle; }
+        .captcha-controls { display: inline-block; vertical-align: middle; margin-left: 10px; }
+
+        .btn-submit {
+            background: var(--brand-blue);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover { background: var(--kseb-blue); }
+
+        /* Payment Gateway Modal/Panel */
+        #paymentGateway {
+            display: none;
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 320px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 18px;
+            z-index: 1200;
+        }
+
+        #paymentGateway img { width: 260px; height: 260px; display: block; margin: 0 auto 12px; }
+        .upi-row { display:flex; gap:8px; align-items:center; }
+        .upi-id { flex:1; padding:8px; border:1px solid #eee; border-radius:6px; background:#fafafa; }
+
+        /* Hidden Bill Results Section */
+        #billResult {
+            display: none; /* Hidden by default */
+            padding: 30px;
+            border-top: 2px solid #eee;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mobile-bill-card {
+            background: var(--app-purple);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .amount { font-size: 24px; font-weight: bold; }
+        .details small { opacity: 0.8; font-size: 12px; }
+
+        .total-box {
+            background: #fff;
+            border: 2px solid var(--app-purple);
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .loading-spinner {
+            display: none;
+            margin: 20px auto;
+            width: 30px;
+            height: 30px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--brand-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">KSEB <span style="font-weight: 300; font-size: 16px;">Web Self Services</span></div>
+    <div>Helpline: 1912</div>
+</header>
+
+<nav>
+    <span>QUICK PAY</span>
+    <span>COMPLAINTS</span>
+    <span>NEW CONNECTION</span>
+    <span>USER GUIDE</span>
+</nav>
+
+<div class="main-card">
+    <div class="card-header">Quick Pay - Consumer Details</div>
+    
+    <div class="form-section">
+        <!-- Login area with client-side captcha -->
+        <h3 style="margin-top:0;">Login to continue</h3>
+        <div class="input-group">
+            <label>Username / Mobile:</label>
+            <input type="text" id="loginUser" placeholder="Enter username or mobile">
+        </div>
+        <div class="input-group">
+            <label>Password:</label>
+            <input type="password" id="loginPass" placeholder="Password">
+        </div>
+
+        <div class="input-group">
+            <label>Captcha:</label>
+            <div>
+                <canvas id="captchaCanvas" width="160" height="50"></canvas>
+                <div class="captcha-controls">
+                    <button class="btn-submit" id="refreshCaptcha" type="button">Refresh</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Enter Captcha:</label>
+            <input type="text" id="captchaInput" placeholder="Type the characters you see">
+        </div>
+
+        <div style="text-align: center; margin-bottom: 18px;">
+            <button class="btn-submit" onclick="login()">Login</button>
+        </div>
+
+        <!-- Consumer inputs: hidden until logged in -->
+        <div id="consumerSection" style="display:none; border-top:1px dashed #eee; padding-top:18px;">
+            <h4 style="margin:8px 0 12px 0;">Fetch Consumer Bill</h4>
+            <div class="input-group">
+                <label>Consumer No:</label>
+                <input type="text" id="consumerNo" placeholder="e.g. 1155571054866">
+            </div>
+            <div class="input-group">
+                <label>Mobile Number:</label>
+                <input type="text" id="phone" placeholder="9947XXXXXX">
+            </div>
+            <div style="text-align: center;">
+                <button class="btn-submit" onclick="fetchBills()">Submit to see the bill</button>
+                <div class="loading-spinner" id="loader"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment gateway panel (UPI QR) -->
+    <div id="paymentGateway" aria-hidden="true">
+        <h4 style="margin:4px 0 8px 0; text-align:center; color:var(--kseb-blue);">Pay via UPI</h4>
+        <!-- Preset PNG embedded as data URL (placeholder PNG). Replace with real UPI QR PNG as needed. -->
+        <img id="upiQrImage" src="upi-qr.png" alt="UPI QR">
+        <div class="upi-row">
+            <div class="upi-id" id="upiId">oneway@upi</div>
+            <button class="btn-submit" id="copyUpi">Copy</button>
+        </div>
+        <div style="margin-top:10px; display:flex; gap:8px;">
+            <button class="btn-submit" id="downloadQr">Download QR</button>
+            <button class="btn-submit" id="closePayment" style="background:#777;">Close</button>
+        </div>
+    </div>
+
+    <div id="billResult">
+        <h3 style="color: var(--kseb-blue);">Outstanding Bill History</h3>
+        
+        <div class="mobile-bill-card">
+            <div class="details">
+                <strong>1155571054866</strong><br>
+                <small>OB-ACD | Due: 22-08-2025</small>
+            </div>
+            <div class="amount">₹702</div>
+        </div>
+
+        <div class="mobile-bill-card">
+            <div class="details">
+                <strong>1155571054866</strong><br>
+                <small>DB-ECSC | Due: 22-08-2025</small>
+            </div>
+            <div class="amount">₹16,454</div>
+        </div>
+
+        <div class="total-box">
+            <p style="margin: 0; font-size: 14px; color: #666;">Total Amount Payable</p>
+            <h1 style="margin: 5px 0; color: var(--app-purple);">₹17,156.00</h1>
+            <button class="btn-submit" style="width: 100%; margin-top: 10px; background: #2b2d42;" onclick="openPayment()">PROCEED TO PAYMENT</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Simple client-side captcha + login + UPI payment panel
+    let currentCaptcha = '';
+    let loggedIn = false;
+
+    function randomChars(len = 6) {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+        let out = '';
+        for (let i = 0; i < len; i++) out += chars.charAt(Math.floor(Math.random() * chars.length));
+        return out;
+    }
+
+    function drawCaptcha(text) {
+        const canvas = document.getElementById('captchaCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        // background
+        ctx.fillStyle = '#f6f9fc';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        // noise
+        for (let i=0;i<20;i++){
+            ctx.fillStyle = 'rgba(0,0,0,' + (Math.random()*0.15) + ')';
+            ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 1+Math.random()*3, 1+Math.random()*3);
+        }
+        // text
+        ctx.font = '26px monospace';
+        ctx.fillStyle = '#102a43';
+        const step = canvas.width / (text.length + 1);
+        for (let i=0;i<text.length;i++){
+            const char = text[i];
+            const x = step * (i+0.8);
+            const y = 30 + (Math.random()*8 - 4);
+            const angle = (Math.random()*20-10) * Math.PI/180;
+            ctx.save();
+            ctx.translate(x,y);
+            ctx.rotate(angle);
+            ctx.fillText(char, 0, 0);
+            ctx.restore();
+        }
+    }
+
+    function generateCaptcha() {
+        currentCaptcha = randomChars(6);
+        drawCaptcha(currentCaptcha);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        generateCaptcha();
+        document.getElementById('refreshCaptcha').addEventListener('click', generateCaptcha);
+
+        document.getElementById('copyUpi').addEventListener('click', () => {
+            const upi = document.getElementById('upiId').textContent;
+            navigator.clipboard && navigator.clipboard.writeText(upi).then(()=>{
+                alert('UPI ID copied');
+            }).catch(()=>{
+                prompt('Copy UPI ID', upi);
+            });
+        });
+
+        document.getElementById('downloadQr').addEventListener('click', () => {
+            const img = document.getElementById('upiQrImage');
+            const a = document.createElement('a');
+            a.href = img.src;
+            a.download = 'upi-qr.png';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        });
+
+        document.getElementById('closePayment').addEventListener('click', closePayment);
+    });
+
+    function login() {
+        const user = document.getElementById('loginUser').value.trim();
+        const pass = document.getElementById('loginPass').value.trim();
+        const entered = document.getElementById('captchaInput').value.trim();
+
+        if (!user || !pass) { alert('Enter username and password'); return; }
+        if (!entered) { alert('Enter captcha'); return; }
+
+        if (entered !== currentCaptcha) {
+            alert('Captcha does not match. Please try again.');
+            generateCaptcha();
+            document.getElementById('captchaInput').value = '';
+            return;
+        }
+
+        // For demo: accept any credentials when captcha correct.
+        loggedIn = true;
+        document.getElementById('consumerSection').style.display = 'block';
+        alert('Login successful — you may now fetch bills.');
+        document.getElementById('consumerSection').scrollIntoView({behavior:'smooth'});
+    }
+
+    function fetchBills() {
+        if (!loggedIn) { alert('Please login first'); return; }
+        const consumerNo = document.getElementById('consumerNo').value;
+        const loader = document.getElementById('loader');
+        const results = document.getElementById('billResult');
+
+        if(consumerNo.length < 5) {
+            alert('Please enter a valid Consumer Number');
+            return;
+        }
+
+        // Simulate fetch
+        loader.style.display = 'block';
+        results.style.display = 'none';
+        setTimeout(() => {
+            loader.style.display = 'none';
+            results.style.display = 'block';
+            results.scrollIntoView({ behavior: 'smooth' });
+        }, 700);
+    }
+
+    function openPayment() {
+        const panel = document.getElementById('paymentGateway');
+        panel.style.display = 'block';
+        panel.setAttribute('aria-hidden','false');
+        panel.scrollIntoView({behavior:'smooth'});
+    }
+
+    function closePayment() {
+        const panel = document.getElementById('paymentGateway');
+        panel.style.display = 'none';
+        panel.setAttribute('aria-hidden','true');
+    }
+</script>
+
+</body>
+</html>
