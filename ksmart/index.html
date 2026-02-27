@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>K-SMART - Building Tax Quick Pay</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="ksmart-page">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="logo-mark">K</div>
+          <span>K-SMART</span>
+        </div>
+        <div class="sidebar-dropdown">
+          <label>Application</label>
+          <select id="application">
+            <option value="building-tax">Building Tax</option>
+          </select>
+        </div>
+        <nav class="step-list">
+          <div class="step active">
+            <span class="step-number">1</span>
+            <span>Building Details</span>
+          </div>
+          <div class="step">
+            <span class="step-number">2</span>
+            <span>Tax Summary</span>
+          </div>
+          <div class="step">
+            <span class="step-number">3</span>
+            <span>Payment</span>
+          </div>
+          <div class="step">
+            <span class="step-number">4</span>
+            <span>Receipt</span>
+          </div>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header class="top-header">
+          <div class="back-link">
+            <span class="back-arrow">←</span>
+            <span>Quick Pay</span>
+          </div>
+          <div class="header-title">Building Tax Payment</div>
+        </header>
+
+        <section id="search-section" class="content-card">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="search-toggles">
+              <button id="toggle-smart" class="toggle active">Smart Search</button>
+              <button id="toggle-advanced" class="toggle">Advanced Search</button>
+            </div>
+
+            <form id="search-form" class="search-form">
+              <div class="input-group">
+                <div class="floating-input">
+                  <input id="mobileNumber" name="mobileNumber" type="tel" placeholder=" " />
+                  <label for="mobileNumber">Mobile Number</label>
+                </div>
+                <span class="or-text">or</span>
+                <div class="floating-input">
+                  <input id="aadhaarNumber" name="aadhaarNumber" placeholder=" " />
+                  <label for="aadhaarNumber">Aadhaar Number</label>
+                </div>
+                <span class="or-text">or</span>
+                <div class="floating-input">
+                  <input id="buildingId" name="buildingId" placeholder=" " />
+                  <label for="buildingId">Building ID</label>
+                  <span class="info-icon">i</span>
+                </div>
+              </div>
+
+              <p id="search-error" class="error hidden"></p>
+
+              <button type="submit" class="search-button">Search</button>
+            </form>
+          </div>
+        </section>
+
+        <section id="tax-section" class="content-card hidden">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="section-header">
+              <h2>Tax Summary</h2>
+              <span id="tax-status" class="status-badge"></span>
+            </div>
+
+            <div class="property-info">
+              <div>
+                <span>Owner Name</span>
+                <strong id="owner-name"></strong>
+              </div>
+              <div>
+                <span>Building ID</span>
+                <strong id="display-building-id"></strong>
+              </div>
+              <div>
+                <span>Ward</span>
+                <strong id="ward"></strong>
+              </div>
+              <div>
+                <span>Address</span>
+                <strong id="property-address"></strong>
+              </div>
+            </div>
+
+            <div class="tax-details">
+              <div>
+                <span>Tax Amount</span>
+                <strong id="tax-amount"></strong>
+              </div>
+              <div>
+                <span>Penalty</span>
+                <strong id="penalty-amount"></strong>
+              </div>
+              <div>
+                <span>Due Date</span>
+                <strong id="due-date"></strong>
+              </div>
+              <div>
+                <span>Total Payable</span>
+                <strong id="total-payable" class="highlight"></strong>
+              </div>
+            </div>
+
+            <div id="paid-banner" class="paid-banner hidden">
+              This tax is already paid. You can search another building.
+            </div>
+
+            <div class="action-buttons">
+              <button id="pay-button" type="button" class="pay-button">Pay via UPI</button>
+              <button id="new-search" type="button" class="ghost-button">New Search</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="payment-section" class="content-card hidden">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="section-header">
+              <h2>UPI Payment</h2>
+              <span id="payment-amount" class="amount-badge"></span>
+            </div>
+
+            <div class="payment-grid">
+              <div
+                id="qr-simulate"
+                class="qr-card"
+                role="button"
+                tabindex="0"
+                aria-label="Simulate UPI QR scan"
+              >
+                <svg
+                  class="qr-image"
+                  viewBox="0 0 120 120"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <rect width="120" height="120" fill="#ffffff" />
+                  <rect x="8" y="8" width="28" height="28" fill="#1B2E58" />
+                  <rect x="84" y="8" width="28" height="28" fill="#1B2E58" />
+                  <rect x="8" y="84" width="28" height="28" fill="#1B2E58" />
+                  <rect x="18" y="18" width="8" height="8" fill="#ffffff" />
+                  <rect x="94" y="18" width="8" height="8" fill="#ffffff" />
+                  <rect x="18" y="94" width="8" height="8" fill="#ffffff" />
+                  <rect x="46" y="16" width="8" height="8" fill="#1B2E58" />
+                  <rect x="60" y="26" width="8" height="8" fill="#1B2E58" />
+                  <rect x="46" y="38" width="10" height="10" fill="#1B2E58" />
+                  <rect x="64" y="48" width="10" height="10" fill="#1B2E58" />
+                  <rect x="38" y="60" width="8" height="8" fill="#1B2E58" />
+                  <rect x="52" y="70" width="12" height="12" fill="#1B2E58" />
+                  <rect x="72" y="66" width="8" height="8" fill="#1B2E58" />
+                  <rect x="60" y="90" width="10" height="10" fill="#1B2E58" />
+                  <rect x="78" y="86" width="6" height="6" fill="#1B2E58" />
+                </svg>
+                <p id="qr-label" class="qr-label"></p>
+                <span class="scan-hint">Tap QR to simulate UPI scan</span>
+              </div>
+
+              <div class="upi-form">
+                <div class="floating-input">
+                  <input id="vpa" name="vpa" placeholder=" " />
+                  <label for="vpa">UPI ID</label>
+                </div>
+                <small class="hint">Use success@upi or fail@upi</small>
+                <p id="payment-error" class="error hidden"></p>
+                <div class="action-buttons">
+                  <button id="confirm-pay" type="button" class="pay-button">Confirm Payment</button>
+                  <button id="back-to-tax" type="button" class="ghost-button">Back</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="result-section" class="content-card hidden">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="result-box">
+              <h2 id="result-title"></h2>
+              <p id="result-message"></p>
+            </div>
+
+            <div class="result-details">
+              <div>
+                <span>Building ID</span>
+                <strong id="result-building"></strong>
+              </div>
+              <div>
+                <span>Status</span>
+                <strong id="result-status"></strong>
+              </div>
+              <div>
+                <span>Payment Method</span>
+                <strong>UPI Sandbox</strong>
+              </div>
+              <div>
+                <span>Reference</span>
+                <strong id="result-ref"></strong>
+              </div>
+            </div>
+
+            <button id="result-new-search" type="button" class="pay-button">Start New Search</button>
+          </div>
+        </section>
+      </main>
+
+      <div class="support-widget">
+        <div class="support-icon">💬</div>
+        <span>We're offline</span>
+      </div>
+
+      <footer class="footer">
+        Copyright © 2023, KSmart, Government of Kerala
+      </footer>
+    </div>
+
+    <div id="overlay" class="overlay hidden" hidden>
+      <div class="loader">
+        <div class="spinner"></div>
+        <p>Processing UPI transaction...</p>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

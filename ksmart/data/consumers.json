@@ -1,0 +1,94 @@
+[
+  {
+    "buildingId": "BLD2024001",
+    "ownerName": "Rajesh Kumar Nair",
+    "mobileNumber": "9876543210",
+    "aadhaarNumber": "123456789012",
+    "ward": "Ward 15 - Thiruvananthapuram",
+    "address": "TC 45/1234, Kowdiar, Thiruvananthapuram, Kerala 695003",
+    "taxes": [
+      {
+        "id": "TAX-2024-001",
+        "taxAmount": 12500,
+        "penalty": 625,
+        "dueDate": "31-Mar-2026",
+        "status": "PENDING"
+      },
+      {
+        "id": "TAX-2023-001",
+        "taxAmount": 11800,
+        "penalty": 0,
+        "dueDate": "31-Mar-2025",
+        "status": "PAID"
+      }
+    ]
+  },
+  {
+    "buildingId": "BLD2024002",
+    "ownerName": "Lakshmi Menon",
+    "mobileNumber": "9845123456",
+    "aadhaarNumber": "234567890123",
+    "ward": "Ward 22 - Kochi",
+    "address": "12/456, MG Road, Ernakulam, Kerala 682011",
+    "taxes": [
+      {
+        "id": "TAX-2024-002",
+        "taxAmount": 8750,
+        "penalty": 0,
+        "dueDate": "31-Mar-2026",
+        "status": "PENDING"
+      }
+    ]
+  },
+  {
+    "buildingId": "BLD2024003",
+    "ownerName": "Mohammed Ashraf",
+    "mobileNumber": "9447789012",
+    "aadhaarNumber": "345678901234",
+    "ward": "Ward 8 - Kozhikode",
+    "address": "23/789, Beach Road, Kozhikode, Kerala 673001",
+    "taxes": [
+      {
+        "id": "TAX-2024-003",
+        "taxAmount": 15000,
+        "penalty": 750,
+        "dueDate": "31-Mar-2026",
+        "status": "PENDING"
+      }
+    ]
+  },
+  {
+    "buildingId": "BLD2024004",
+    "ownerName": "Priya Krishnan",
+    "mobileNumber": "8547612345",
+    "aadhaarNumber": "456789012345",
+    "ward": "Ward 5 - Thrissur",
+    "address": "78/234, Swaraj Round, Thrissur, Kerala 680001",
+    "taxes": [
+      {
+        "id": "TAX-2024-004",
+        "taxAmount": 6500,
+        "penalty": 0,
+        "dueDate": "31-Mar-2026",
+        "status": "PAID"
+      }
+    ]
+  },
+  {
+    "buildingId": "BLD2024005",
+    "ownerName": "George Thomas",
+    "mobileNumber": "7034567890",
+    "aadhaarNumber": "567890123456",
+    "ward": "Ward 12 - Kollam",
+    "address": "45/678, Main Road, Kollam, Kerala 691001",
+    "taxes": [
+      {
+        "id": "TAX-2024-005",
+        "taxAmount": 9200,
+        "penalty": 460,
+        "dueDate": "31-Mar-2026",
+        "status": "PENDING"
+      }
+    ]
+  }
+]
